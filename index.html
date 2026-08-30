@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mochammad Fariz Zeth Mustafa — IT Support & Network Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f6f3;
+    --surface:#ffffff;
+    --surface-2:#f0efea;
+    --text:#101114;
+    --muted:#54585f;
+    --accent:#0c34e8;
+    --accent-2:#1f8f7e;
+    --line:rgba(16,17,20,0.12);
+    --radius:14px;
+    --photo-ring:rgba(232,89,12,0.30);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1115;
+    --surface:#171a20;
+    --surface-2:#1e222a;
+    --text:#f2f1ee;
+    --muted:#a3a8b0;
+    --accent:#ff7a3d;
+    --accent-2:#4fd1c5;
+    --line:rgba(242,241,238,0.12);
+    --photo-ring:rgba(255,122,61,0.30);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    transition:background .3s ease, color .3s ease;
+  }
+  ::selection{ background:var(--accent); color:#fff; }
+  a{ color:inherit; text-decoration:none; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  .wrap{ max-width:960px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- NAVBAR ---------- */
+  .navbar{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{ min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .brand{ font-weight:800; font-size:15px; letter-spacing:-0.01em; }
+  .nav-links{ display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+  .nav-links a{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--muted); transition:color .2s ease;
+  }
+  .nav-links a:hover{ color:var(--accent); }
+  .theme-toggle{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:999px; padding:4px 10px 4px 4px; cursor:pointer;
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text);
+  }
+  .theme-toggle .icon-track{ width:28px; height:15px; border-radius:999px; background:var(--surface-2); position:relative; flex:none; }
+  .theme-toggle .icon-dot{ position:absolute; top:2px; left:2px; width:11px; height:11px; border-radius:50%; background:var(--accent); transition:transform .2s ease; }
+  :root[data-theme="dark"] .theme-toggle .icon-dot{ transform:translateX(13px); }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:88px 0 64px;
+    display:grid; grid-template-columns:1fr 230px; gap:48px; align-items:center;
+  }
+  .hero-text{ min-width:0; }
+  h1.name{
+    font-weight:800; font-size:clamp(38px, 6.4vw, 60px);
+    line-height:1.08; letter-spacing:-0.02em; color:var(--text);
+  }
+  h1.name .accent{ color:var(--accent); }
+  .eyebrow{
+    margin-top:20px;
+    font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--accent);
+    letter-spacing:0.02em;
+  }
+  .lede{ margin-top:20px; font-size:16.5px; color:var(--muted); max-width:540px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:500;
+    padding:13px 20px; border-radius:8px; letter-spacing:0.01em;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-filled{ background:var(--accent); color:#fff; }
+  .btn-outline{ background:var(--surface); color:var(--text); border:1px solid var(--line); }
+  .hero-actions{ margin-top:34px; }
+
+  .hero-photo{ justify-self:auto; width:350px; height:350px; position:relative; flex:none; }
+  .hero-photo .ring{ position:absolute; inset:-9px; border:1px solid var(--photo-ring); border-radius:50%; }
+  .hero-photo img{ width:100%; height:100%; object-fit:cover; border-radius:50%; border:1px solid var(--line); display:block; background:var(--surface); }
+  .hero-photo .avatar-fallback{
+    width:100%; height:100%; border-radius:50%; border:1px solid var(--line);
+    display:none; align-items:center; justify-content:center;
+    background:linear-gradient(145deg, var(--surface), var(--surface-2));
+  }
+  .hero-photo .avatar-fallback span{ font-weight:800; font-size:56px; color:var(--accent); }
+
+  @media (max-width:760px){
+    header.hero{ grid-template-columns:1fr; }
+    .hero-photo{ justify-self:start; width:140px; height:140px; order:-1; }
+    .hero-photo .avatar-fallback span{ font-size:36px; }
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{ padding:56px 0; border-top:1px solid var(--line); }
+  .section-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:32px; }
+  .tag{
+    font-family:'JetBrains Mono', monospace; font-size:15px; color:var(--accent);
+    border:1px solid rgba(232,89,12,0.3); padding:3px 8px; border-radius:6px; letter-spacing:0.08em;
+  }
+  h2.section-title{ font-weight:800; font-size:25px; letter-spacing:-0.01em; }
+
+  /* ---------- TENTANG ---------- */
+  .about-grid{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:44px; }
+  .about-text p{ color:var(--muted); font-size:15.5px; margin-bottom:14px; max-width:520px; }
+  .about-facts{ border-top:1px solid var(--line); }
+  .fact{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .fact .k{ color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:11.5px; }
+  .fact .v{ text-align:right; font-weight:500; }
+
+  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; gap:28px; } }
+
+  /* ---------- PENDIDIKAN ---------- */
+  .edu-list{ display:flex; flex-direction:column; gap:18px; }
+  .edu-item{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 24px; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .edu-degree{ font-weight:700; font-size:16.5px; }
+  .edu-school{ color:var(--accent); font-size:13.5px; margin-top:4px; }
+  .edu-period{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted); white-space:nowrap; }
+
+  /* ---------- PENGALAMAN ---------- */
+  .timeline{ position:relative; padding-left:26px; }
+  .timeline::before{ content:""; position:absolute; left:4px; top:6px; bottom:6px; width:1px; background:var(--line); }
+  .job{ position:relative; padding-bottom:32px; }
+  .job:last-child{ padding-bottom:0; }
+  .job::before{ content:""; position:absolute; left:-26px; top:5px; width:9px; height:9px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); }
+  .job-top{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+  .job-title{ font-weight:700; font-size:17px; }
+  .job-period{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted); white-space:nowrap; }
+  .job-org{ color:var(--accent); font-size:13.5px; margin-bottom:10px; font-weight:500; }
+  .job-desc{ color:var(--muted); font-size:14.5px; max-width:600px; }
+  .job-desc li{ margin-left:18px; margin-bottom:4px; }
+
+  /* ---------- PROYEK ---------- */
+  .proj-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px; transition:border-color .2s ease, transform .2s ease;
+  }
+  .proj-card:hover{ border-color:rgba(232,89,12,0.4); transform:translateY(-2px); }
+  .proj-name{ font-weight:700; font-size:20px; margin-bottom:10px; }
+  .proj-desc{ color:var(--muted); font-size:14.5px; margin-bottom:18px; max-width:640px; }
+  .proj-stack{ display:flex; gap:8px; flex-wrap:wrap; }
+  .chip{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--text);
+    background:var(--surface-2); border:1px solid var(--line); padding:4px 10px; border-radius:6px;
+  }
+
+  /* ---------- SKILL ---------- */
+  .skill-groups{ display:grid; grid-template-columns:repeat(3, 1fr); gap:30px; }
+  .skill-group .g-title{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--muted);
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px;
+  }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .skill-tags span{
+    font-size:13.5px; font-weight:500; background:var(--surface); border:1px solid var(--line);
+    padding:7px 12px; border-radius:8px;
+  }
+  @media (max-width:760px){ .skill-groups{ grid-template-columns:1fr; gap:24px; } }
+
+  /* ---------- KONTAK ---------- */
+  .contact-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:20px;
+    padding:56px 40px; text-align:center;
+  }
+  .contact-card .tag{ margin-bottom:20px; }
+  .contact-card h2{ font-weight:800; font-size:34px; letter-spacing:-0.01em; margin-bottom:18px; }
+  .contact-card p{ color:var(--muted); font-size:15.5px; max-width:520px; margin:0 auto 30px; }
+  .contact-actions{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+  .contact-actions .btn svg{ flex:none; }
+
+  .site-footer{ padding:40px 0 60px; text-align:center; }
+  .dot-row{ display:flex; justify-content:center; gap:6px; margin-bottom:14px; }
+  .dot-row span{ width:16px; height:5px; border-radius:3px; display:block; }
+  .site-footer .caption{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); letter-spacing:0.1em; }
+
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+</style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="wrap nav-wrap">
+      <div class="brand">Mochammad Fariz Zeth Mustafa</div>
+      <div class="nav-links">
+        <a href="#tentang">Tentang</a>
+        <a href="#pendidikan">Pendidikan</a>
+        <a href="#pengalaman">Pengalaman</a>
+        <a href="#proyek">Proyek</a>
+        <a href="#skill">Skill</a>
+        <a href="#kontak">Kontak</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ganti mode terang/gelap">
+          <span class="icon-track"><span class="icon-dot"></span></span>
+          <span id="themeLabel">Light</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- HERO -->
+    <header class="hero reveal">
+      <div class="hero-text">
+        <h1 class="name">Mochammad Fariz Zeth Mustafa<br><span class="accent">IT Support</span> &amp; Network<br>Engineering</h1>
+        <div class="eyebrow">Network Support · IoT Development · Cloud Administration</div>
+        <p class="lede">Mahasiswa Teknik Komputer dengan pengalaman langsung menangani instalasi, konfigurasi, dan pemeliharaan jaringan , Menguasai Operasi Cloud, Pembuatan Aplikasi, dan Pembuatan web.</p>
+        <div class="hero-actions">
+          <a class="btn btn-filled" href="#kontak">Hubungi Saya →</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <div class="ring"></div>
+        <!-- Ganti "foto-profil.jpg" dengan nama file foto Anda sendiri, letakkan di folder yang sama dengan file HTML ini -->
+        <img src="d.png" alt="Foto profil Mochammad Fariz Zeth Mustafa" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="avatar-fallback"><span>AS</span></div>
+      </div>
+    </header>
+
+    <!-- TENTANG -->
+    <section id="tentang" class="reveal">
+      <div class="section-head">
+        <span class="tag">ABOUT</span>
+        <h2 class="section-title">Tentang Saya</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Saya Mochammad Fariz Zeth Mustafa, Lulusan Teknik Komputer yang tertarik pada dunia jaringan, infrastruktur IT, dan Jaringan Komputer. Pengalaman magang saya membawa saya dari administrasi data lapangan, desain grafis, hingga mengelola virtual environment dan cloud di lingkungan perusahaan.</p>
+          <p>Saya senang bekerja langsung di lapangan maupun di balik layar — memastikan jaringan berjalan stabil, sistem terkonfigurasi dengan benar, dan pelanggan atau tim mendapat layanan yang responsif.</p>
+        </div>
+        <div class="about-facts">
+          <div class="fact"><span class="k">NAMA LENGKAP</span><span class="v">Mochammad Fariz Zeth Mustafa</span></div>
+          <div class="fact"><span class="k">BIDANG STUDI</span><span class="v">Teknik Komputer</span></div>
+          <div class="fact"><span class="k">DOMISILI</span><span class="v">Surabaya, Indonesia</span></div>
+          <div class="fact"><span class="k">STATUS</span><span class="v">Terbuka untuk Magang / Kerja</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENDIDIKAN -->
+    <section id="pendidikan" class="reveal">
+      <div class="section-head">
+        <h2 class="section-title">Pendidikan</h2>
+      </div>
+      <div class="edu-list">
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">Teknik Komputer (Computer Engineering)</div>
+            <div class="edu-school">Telkom University Surabaya</div>
+          </div>
+          <div class="edu-period">2022 - 2026</div>
+        </div>
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">Teknik Komputer Jaringan</div>
+            <div class="edu-school">SMKN 1 Balikpapan</div>
+          </div>
+          <div class="edu-period">2019 - 2022</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENGALAMAN -->
+    <section id="pengalaman" class="reveal">
+      <div class="section-head">
+        <span class="tag">EXP</span>
+        <h2 class="section-title">Pengalaman Kerja</h2>
+      </div>
+      <div class="timeline">
+        <div class="job">
+          <div class="job-top">
+            <div class="job-title">Cloud Administrator (Internship)</div>
+            <div class="job-period mono">Sep 2023 — Feb 2024 · 6 bln</div>
+          </div>
+          <div class="job-org">PT. Radnet Digital Indonesia, Surabaya</div>
+          <ul class="job-desc">
+            <li>Membuat virtual environment untuk melaksanakan pekerjaan yang terisolasi tanpa mengganggu sistem utama.</li>
+            <li>Memastikan perpindahan data antara server dan client tidak terganggu atau mengalami kelambatan.</li>
+            <li>Membuat Ansible playbook untuk instalasi program atau module dalam sebuah lingkungan.</li>
+          </ul>
+        </div>
+        <div class="job">
+          <div class="job-top">
+            <div class="job-title">Graphic Designer (Internship)</div>
+            <div class="job-period mono">Okt — Des 2021 · 3 bln</div>
+          </div>
+          <div class="job-org">Multimedia Sinergi, Balikpapan</div>
+          <ul class="job-desc">
+            <li>Membuat desain poster untuk kebutuhan promosi.</li>
+            <li>Melakukan editan foto/video.</li>
+            <li>Membantu dalam proses pencetakan banner, sticker, poster.</li>
+          </ul>
+        </div>
+        <div class="job">
+          <div class="job-top">
+            <div class="job-title">Data Administration (Internship)</div>
+            <div class="job-period mono">Apr — Jun 2021 · 3 bln</div>
+          </div>
+          <div class="job-org">PT. Adyawinsa, Balikpapan</div>
+          <ul class="job-desc">
+            <li>Melakukan input dan pengelolaan data terkait tower jaringan menggunakan Microsoft Excel, termasuk memasukkan gambar sebagai dokumentasi kondisi dan identitas tower.</li>
+            <li>Melakukan validasi data untuk memastikan informasi dan spesifikasi setiap tower sesuai dengan dokumentasi serta report yang tersedia.</li>
+            <li>Melakukan pengecekan kesesuaian data tower antara dokumentasi lapangan dengan data yang tercantum pada report, seperti serial number, lokasi, dan spesifikasi tower.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROYEK -->
+    <section id="proyek" class="reveal">
+      <div class="section-head">
+        <h2 class="section-title">Proyek</h2>
+      </div>
+      <div class="proj-card">
+        <div class="proj-name">Deteksi Plat Nomor Kendaraan (Haar Cascade + CNN)</div>
+        <div class="proj-desc">Sistem deteksi dan pengenalan plat nomor kendaraan dari citra digital. Haar Cascade digunakan untuk mendeteksi lokasi plat nomor pada gambar, kemudian Convolutional Neural Network (CNN) digunakan untuk mengenali karakter pada plat tersebut.</div>
+        <div class="proj-stack">
+          <span class="chip">Python</span>
+          <span class="chip">OpenCV</span>
+          <span class="chip">Haar Cascade</span>
+          <span class="chip">CNN</span>
+          <span class="chip">TensorFlow/Keras</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILL -->
+    <section id="skill" class="reveal">
+      <div class="section-head">
+        <span class="tag">SKILL</span>
+        <h2 class="section-title">Skill yang Dikuasai</h2>
+      </div>
+      <div class="skill-groups">
+        <div class="skill-group">
+          <div class="g-title">Jaringan &amp; IT Support</div>
+          <div class="skill-tags">
+            <span>Network Troubleshooting</span>
+            <span>Konfigurasi Router/Switch</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="g-title">Sistem &amp; Cloud</div>
+          <div class="skill-tags">
+            <span>Linux</span>
+            <span>Docker</span>
+            <span>Ansible</span>
+            <span>Kubernetes</span>
+            <span>Cloud Administration</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="g-title">Programming &amp; Lainnya</div>
+          <div class="skill-tags">
+            <span>Python</span>
+            <span>IoT</span>
+            <span>OpenCV</span>
+            <span>Desain Grafis</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KONTAK -->
+    <section id="kontak" class="reveal">
+      <div class="contact-card">
+        <span class="tag">KONTAK</span>
+        <h2>Hubungi Saya</h2>
+        <p>Saya terbuka untuk peluang kerja di bidang IT Support, Network Engineering, maupun Customer Service. Anda dapat menghubungi saya melalui email, WhatsApp, atau LinkedIn di bawah ini.</p>
+        <div class="contact-actions">
+          <a class="btn btn-filled" href="mailto:farizzmustafa@gmail.com">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M3 6l9 7 9-7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+            farizzmustafa@gmail.com
+          </a>
+          <a class="btn btn-outline" href="https://wa.me/6281528790144" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.36a9.86 9.86 0 0 0 4.62 1.17h.01c5.46 0 9.9-4.45 9.9-9.91C21.95 6.45 17.5 2 12.04 2zm0 17.9h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.78.84-3.04-.2-.31a8.2 8.2 0 0 1-1.27-4.09c0-4.53 3.7-8.22 8.25-8.22 2.2 0 4.27.86 5.83 2.42a8.17 8.17 0 0 1 2.42 5.82c0 4.53-3.7 8.22-8.25 8.22z"/></svg>
+            +62 815-2879-0144
+          </a>
+          <a class="btn btn-outline" href="https://www.linkedin.com/in/mochammad-fariz-zeth-mustafa-00148b361/" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.66 4.78 6.12V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.84 0-2.12 1.43-2.12 2.9V21H9z"/></svg>
+            https://www.linkedin.com/in/mochammad-fariz-zeth-mustafa
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="site-footer">
+      <div class="dot-row">
+        <span style="background:#e8a33d"></span>
+        <span style="background:#e8590c"></span>
+        <span style="background:#1f8f7e"></span>
+        <span style="background:#4fd1c5"></span>
+        <span style="background:#1f8f7e"></span>
+        <span style="background:#b9720f"></span>
+        <span style="background:#8b5e34"></span>
+      </div>
+      <div class="caption">SURABAYA, ID</div>
+      <div> &nbsp; </div>
+      <div class="caption">@Mochammad Fariz Zeth Mustafa</div>
+    </div>
+
+  </div>
+
+<script>
+  // Mode terang / gelap — default terang
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+
+  function setTheme(theme){
+    root.setAttribute('data-theme', theme);
+    themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
+  }
+  setTheme('light');
+
+  toggleBtn.addEventListener('click', ()=>{
+    const current = root.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.1 });
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>
