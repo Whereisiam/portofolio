@@ -46,6 +46,7 @@
   a{ color:inherit; text-decoration:none; }
   .mono{ font-family:'JetBrains Mono', monospace; }
   .wrap{ max-width:960px; margin:0 auto; padding:0 28px; }
+  @media (max-width:600px){ .wrap{ padding:0 20px; } }
 
   /* ---------- NAVBAR ---------- */
   .navbar{
@@ -54,8 +55,12 @@
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
   }
-  .nav-wrap{ min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
-  .brand{ font-weight:800; font-size:15px; letter-spacing:-0.01em; }
+  .nav-wrap{ min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:16px; position:relative; }
+  .brand{
+    font-weight:800; font-size:15px; letter-spacing:-0.01em;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;
+  }
+  .nav-right{ display:flex; align-items:center; gap:14px; flex:none; }
   .nav-links{ display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
   .nav-links a{
     font-family:'JetBrains Mono', monospace;
@@ -68,10 +73,45 @@
     background:var(--surface); border:1px solid var(--line);
     border-radius:999px; padding:4px 10px 4px 4px; cursor:pointer;
     font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text);
+    flex:none;
   }
   .theme-toggle .icon-track{ width:28px; height:15px; border-radius:999px; background:var(--surface-2); position:relative; flex:none; }
   .theme-toggle .icon-dot{ position:absolute; top:2px; left:2px; width:11px; height:11px; border-radius:50%; background:var(--accent); transition:transform .2s ease; }
   :root[data-theme="dark"] .theme-toggle .icon-dot{ transform:translateX(13px); }
+
+  .nav-toggle{
+    display:none; flex-direction:column; justify-content:center; align-items:center; gap:4px;
+    width:34px; height:34px; background:var(--surface); border:1px solid var(--line);
+    border-radius:8px; cursor:pointer; flex:none; padding:0;
+  }
+  .nav-toggle span{
+    width:16px; height:2px; background:var(--text); border-radius:2px;
+    transition:transform .2s ease, opacity .2s ease;
+  }
+  .nav-toggle.open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2){ opacity:0; }
+  .nav-toggle.open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
+  @media (max-width:760px){
+    .brand{ font-size:13px; max-width:150px; }
+    .nav-toggle{ display:flex; }
+    .theme-toggle span:not(.icon-track){ display:none; }
+    .theme-toggle{ padding:4px; }
+    .theme-toggle .icon-track{ margin:0; }
+    .nav-links{
+      position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; align-items:stretch; gap:0;
+      background:var(--surface); border-bottom:1px solid var(--line);
+      max-height:0; overflow:hidden;
+      padding:0 24px; margin:0 -24px;
+      transition:max-height .28s ease, padding .28s ease;
+    }
+    .nav-links.open{ max-height:360px; padding:10px 24px 18px; }
+    .nav-links a{
+      padding:12px 0; border-bottom:1px solid var(--line); font-size:12.5px;
+    }
+    .nav-links a:last-child{ border-bottom:none; }
+  }
 
   /* ---------- HERO ---------- */
   header.hero{
@@ -113,14 +153,18 @@
   .hero-photo .avatar-fallback span{ font-weight:800; font-size:56px; color:var(--accent); }
 
   @media (max-width:760px){
-    header.hero{ grid-template-columns:1fr; }
-    .hero-photo{ justify-self:start; width:140px; height:140px; order:-1; }
-    .hero-photo .avatar-fallback span{ font-size:36px; }
+    header.hero{ grid-template-columns:1fr; padding:56px 0 40px; }
+    .hero-photo{ justify-self:start; width:150px; height:150px; order:-1; }
+    .hero-photo .avatar-fallback span{ font-size:38px; }
+    h1.name{ font-size:clamp(30px, 9vw, 60px); }
+    .lede{ font-size:15px; }
+    .hero-actions .btn{ width:100%; justify-content:center; }
   }
 
   /* ---------- SECTION SHELL ---------- */
   section{ padding:56px 0; border-top:1px solid var(--line); }
-  .section-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:32px; }
+  @media (max-width:600px){ section{ padding:40px 0; } }
+  .section-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:32px; flex-wrap:wrap; }
   .tag{
     font-family:'JetBrains Mono', monospace; font-size:15px; color:var(--accent);
     border:1px solid rgba(232,89,12,0.3); padding:3px 8px; border-radius:6px; letter-spacing:0.08em;
@@ -136,6 +180,10 @@
   .fact .v{ text-align:right; font-weight:500; }
 
   @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; gap:28px; } }
+  @media (max-width:420px){
+    .fact{ flex-direction:column; align-items:flex-start; gap:3px; }
+    .fact .v{ text-align:left; }
+  }
 
   /* ---------- PENDIDIKAN ---------- */
   .edu-list{ display:flex; flex-direction:column; gap:18px; }
@@ -167,6 +215,7 @@
     cursor:pointer;
   }
   .proj-card:hover{ border-color:rgba(232,89,12,0.4); transform:translateY(-2px); }
+  @media (max-width:600px){ .proj-card{ padding:20px; } }
   .proj-name{ font-weight:700; font-size:20px; margin-bottom:10px; }
   .proj-desc{ color:var(--muted); font-size:14.5px; margin-bottom:18px; max-width:640px; }
   .proj-stack{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
@@ -233,7 +282,10 @@
   }
   @media (max-width:600px){
     .shot-row{ grid-template-columns:1fr; }
-    .modal-box{ padding:24px; }
+    .modal-overlay{ padding:0; align-items:stretch; }
+    .modal-box{ padding:22px; border-radius:0; min-height:100%; max-width:none; }
+    .modal-title{ font-size:19px; padding-right:36px; }
+    .modal-close{ top:14px; right:14px; }
   }
 
   /* ---------- SKILL ---------- */
@@ -260,6 +312,17 @@
   .contact-actions{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
   .contact-actions .btn svg{ flex:none; }
 
+  @media (max-width:600px){
+    .contact-card{ padding:36px 20px; }
+    .contact-card h2{ font-size:26px; }
+    .contact-card p{ font-size:14.5px; }
+    .contact-actions{ flex-direction:column; align-items:stretch; }
+    .contact-actions .btn{
+      width:100%; justify-content:center;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+  }
+
   .site-footer{ padding:40px 0 60px; text-align:center; }
   .dot-row{ display:flex; justify-content:center; gap:6px; margin-bottom:14px; }
   .dot-row span{ width:16px; height:5px; border-radius:3px; display:block; }
@@ -275,16 +338,21 @@
   <div class="navbar">
     <div class="wrap nav-wrap">
       <a class="brand" href="#hero">Mochammad Fariz Zeth Mustafa</a>
-      <div class="nav-links">
-        <a href="#tentang">Tentang</a>
-        <a href="#pendidikan">Pendidikan</a>
-        <a href="#pengalaman">Pengalaman</a>
-        <a href="#proyek">Proyek</a>
-        <a href="#skill">Skill</a>
-        <a href="#kontak">Kontak</a>
+      <div class="nav-right">
+        <div class="nav-links" id="navLinks">
+          <a href="#tentang">Tentang</a>
+          <a href="#pendidikan">Pendidikan</a>
+          <a href="#pengalaman">Pengalaman</a>
+          <a href="#proyek">Proyek</a>
+          <a href="#skill">Skill</a>
+          <a href="#kontak">Kontak</a>
+        </div>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ganti mode terang/gelap">
           <span class="icon-track"><span class="icon-dot"></span></span>
           <span id="themeLabel">Light</span>
+        </button>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka menu" aria-expanded="false">
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
@@ -551,6 +619,23 @@ Proyek ini mencakup proses pengumpulan dan pelabelan dataset gambar kendaraan, p
     const current = root.getAttribute('data-theme');
     setTheme(current === 'dark' ? 'light' : 'dark');
   });
+
+  // Menu mobile (hamburger)
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  function toggleNav(){
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  }
+  function closeNav(){
+    navLinks.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+  navToggle.addEventListener('click', toggleNav);
+  navLinks.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeNav));
 
   // Modal detail proyek
   const projectModal = document.getElementById('projectModal');
