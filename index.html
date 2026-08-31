@@ -32,7 +32,7 @@
     --photo-ring:rgba(255,122,61,0.30);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; background:var(--bg);}
   body{
     background:var(--bg);
     color:var(--text);
@@ -103,7 +103,7 @@
       flex-direction:column; align-items:stretch; gap:0;
       background:var(--surface); border-bottom:1px solid var(--line);
       max-height:0; overflow:hidden;
-      padding:0 24px; margin:0 -24px;
+      padding:0 24px;
       transition:max-height .28s ease, padding .28s ease;
     }
     .nav-links.open{ max-height:360px; padding:10px 24px 18px; }
@@ -231,15 +231,17 @@
   /* ---------- MODAL DETAIL PROYEK ---------- */
   .modal-overlay{
     position:fixed; inset:0; z-index:100;
-    background:rgba(10,11,13,0.6);
-    backdrop-filter:blur(3px);
+    background:var(--bg);
     display:none; align-items:flex-start; justify-content:center;
     padding:40px 20px;
     overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
   }
   .modal-overlay.open{ display:flex; }
   .modal-box{
     background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:0 24px 60px rgba(16,17,20,0.12);
     max-width:760px; width:100%; padding:36px; position:relative;
     animation:modalIn .25s ease;
   }
@@ -280,10 +282,10 @@
     font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--accent-2);
     padding:10px 12px; text-align:center; background:var(--surface);
   }
-  @media (max-width:600px){
+  @media (max-width:760px){
     .shot-row{ grid-template-columns:1fr; }
     .modal-overlay{ padding:0; align-items:stretch; }
-    .modal-box{ padding:22px; border-radius:0; min-height:100%; max-width:none; }
+    .modal-box{ padding:22px; border-radius:0; min-height:100%; min-height:100dvh; max-width:none; }
     .modal-title{ font-size:19px; padding-right:36px; }
     .modal-close{ top:14px; right:14px; }
   }
@@ -669,12 +671,30 @@ Proyek ini mencakup proses pengumpulan dan pelabelan dataset gambar kendaraan, p
     }
 
     projectModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
   }
 
   function closeProjectModal(){
     projectModal.classList.remove('open');
-    document.body.style.overflow = '';
+    unlockBodyScroll();
+  }
+
+  let savedScrollY = 0;
+  function lockBodyScroll(){
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = -savedScrollY + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+  function unlockBodyScroll(){
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, savedScrollY);
   }
 
   modalClose.addEventListener('click', closeProjectModal);
