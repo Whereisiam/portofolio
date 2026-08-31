@@ -40,6 +40,7 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
     transition:background .3s ease, color .3s ease;
+    overflow-x:hidden;
   }
   ::selection{ background:var(--accent); color:#fff; }
   a{ color:inherit; text-decoration:none; }
@@ -74,6 +75,7 @@
 
   /* ---------- HERO ---------- */
   header.hero{
+    scroll-margin-top:80px;
     padding:88px 0 64px;
     display:grid; grid-template-columns:1fr 230px; gap:48px; align-items:center;
   }
@@ -162,14 +164,76 @@
   .proj-card{
     background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
     padding:28px; transition:border-color .2s ease, transform .2s ease;
+    cursor:pointer;
   }
   .proj-card:hover{ border-color:rgba(232,89,12,0.4); transform:translateY(-2px); }
   .proj-name{ font-weight:700; font-size:20px; margin-bottom:10px; }
   .proj-desc{ color:var(--muted); font-size:14.5px; margin-bottom:18px; max-width:640px; }
-  .proj-stack{ display:flex; gap:8px; flex-wrap:wrap; }
+  .proj-stack{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
   .chip{
     font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--text);
     background:var(--surface-2); border:1px solid var(--line); padding:4px 10px; border-radius:6px;
+  }
+  .proj-hint{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--accent);
+    display:inline-flex; align-items:center; gap:6px;
+  }
+
+  /* ---------- MODAL DETAIL PROYEK ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(10,11,13,0.6);
+    backdrop-filter:blur(3px);
+    display:none; align-items:flex-start; justify-content:center;
+    padding:40px 20px;
+    overflow-y:auto;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    max-width:760px; width:100%; padding:36px; position:relative;
+    animation:modalIn .25s ease;
+  }
+  @keyframes modalIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+  .modal-close{
+    position:absolute; top:18px; right:18px; width:32px; height:32px; border-radius:50%;
+    background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    font-size:16px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .modal-close:hover{ border-color:var(--accent); color:var(--accent); }
+  .modal-title{ font-weight:800; font-size:23px; letter-spacing:-0.01em; padding-right:40px; margin-bottom:14px; }
+  .modal-stack{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .modal-desc{ color:var(--muted); font-size:14.5px; margin-bottom:28px; white-space:pre-line; }
+
+  .modal-gallery{ display:flex; flex-direction:column; gap:14px; }
+  .shot-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; }
+  .shot{
+    background:#12141a; border-radius:10px; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .browser-bar{
+    display:flex; gap:6px; padding:9px 12px; background:#1b1e26;
+  }
+  .browser-bar span{ width:9px; height:9px; border-radius:50%; display:block; }
+  .browser-bar span:nth-child(1){ background:#ff5f57; }
+  .browser-bar span:nth-child(2){ background:#febc2e; }
+  .browser-bar span:nth-child(3){ background:#28c840; }
+  .shot img{
+    width:100%; display:block; height:auto;
+    background:#0f1115;
+  }
+  .shot .img-fallback{
+    width:100%; aspect-ratio:16/10; display:none; align-items:center; justify-content:center;
+    color:#5b6270; font-family:'JetBrains Mono', monospace; font-size:12px; text-align:center; padding:0 16px;
+  }
+  .shot-caption{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--accent-2);
+    padding:10px 12px; text-align:center; background:var(--surface);
+  }
+  @media (max-width:600px){
+    .shot-row{ grid-template-columns:1fr; }
+    .modal-box{ padding:24px; }
   }
 
   /* ---------- SKILL ---------- */
@@ -210,7 +274,7 @@
 
   <div class="navbar">
     <div class="wrap nav-wrap">
-      <div class="brand">Mochammad Fariz Zeth Mustafa</div>
+      <a class="brand" href="#hero">Mochammad Fariz Zeth Mustafa</a>
       <div class="nav-links">
         <a href="#tentang">Tentang</a>
         <a href="#pendidikan">Pendidikan</a>
@@ -229,7 +293,7 @@
   <div class="wrap">
 
     <!-- HERO -->
-    <header class="hero reveal">
+    <header class="hero reveal" id="hero">
       <div class="hero-text">
         <h1 class="name">Mochammad Fariz Zeth Mustafa<br><span class="accent">IT Support</span> &amp; Network<br>Engineering</h1>
         <div class="eyebrow">Network Support · IoT Development · Cloud Administration</div>
@@ -261,7 +325,7 @@
           <div class="fact"><span class="k">NAMA LENGKAP</span><span class="v">Mochammad Fariz Zeth Mustafa</span></div>
           <div class="fact"><span class="k">BIDANG STUDI</span><span class="v">Teknik Komputer</span></div>
           <div class="fact"><span class="k">DOMISILI</span><span class="v">Surabaya, Indonesia</span></div>
-          <div class="fact"><span class="k">STATUS</span><span class="v">Terbuka untuk Magang / Kerja</span></div>
+          <div class="fact"><span class="k">STATUS</span><span class="v">Terbuka untuk Kerja</span></div>
         </div>
       </div>
     </section>
@@ -327,9 +391,9 @@
           </div>
           <div class="job-org">PT. Adyawinsa, Balikpapan</div>
           <ul class="job-desc">
-            <li>Melakukan input dan pengelolaan data terkait tower jaringan menggunakan Microsoft Excel, termasuk memasukkan gambar sebagai dokumentasi kondisi dan identitas tower.</li>
-            <li>Melakukan validasi data untuk memastikan informasi dan spesifikasi setiap tower sesuai dengan dokumentasi serta report yang tersedia.</li>
-            <li>Melakukan pengecekan kesesuaian data tower antara dokumentasi lapangan dengan data yang tercantum pada report, seperti serial number, lokasi, dan spesifikasi tower.</li>
+            <li>Melakukan pengolahan dan pelaporan data physical audit BTS serta validasi kesesuaian data dengan dokumentasi lapangan.</li>
+            <li>Melakukan clearing BTS down melalui sistem dan membuat report log alarm BTS down sebagai dokumentasi hasil monitoring.</li>
+            <li>Melakukan validasi dan pencocokan data BTS dengan dokumentasi lapangan serta report untuk memastikan informasi seperti serial number, lokasi, dan spesifikasi tercatat secara lengkap dan sesuai.</li>
           </ul>
         </div>
       </div>
@@ -340,7 +404,16 @@
       <div class="section-head">
         <h2 class="section-title">Proyek</h2>
       </div>
-      <div class="proj-card">
+      <div class="proj-card"
+        onclick="openProjectModal(this)"
+        data-title="Deteksi Plat Nomor Kendaraan (Haar Cascade + CNN)"
+        data-stack="Python, OpenCV, Haar Cascade, CNN, TensorFlow/Keras"
+        data-desc="Sistem deteksi dan pengenalan plat nomor kendaraan dari citra digital, dibangun dalam dua tahap. Tahap pertama menggunakan Haar Cascade Classifier untuk mendeteksi dan melokalisasi area plat nomor pada gambar kendaraan secara cepat. Tahap kedua, area plat yang terdeteksi diproses lebih lanjut menggunakan Convolutional Neural Network (CNN) untuk mengenali dan mengklasifikasikan tiap karakter pada plat tersebut.
+
+Proyek ini mencakup proses pengumpulan dan pelabelan dataset gambar kendaraan, pelatihan model Haar Cascade khusus untuk objek plat nomor, praproses citra (grayscale, thresholding, segmentasi karakter), hingga pelatihan model CNN untuk klasifikasi karakter alfanumerik. Hasil akhirnya berupa teks plat nomor yang berhasil dibaca dari gambar input."
+        data-img1="GUI Aplikasi.jpg" data-cap1="Deteksi area plat nomor menggunakan Haar Cascade"
+        data-img2="preprocessing.jpg" data-cap2="Segmentasi & preprocessing karakter pada plat"
+        data-img3="cnn.jpg" data-cap3="Hasil klasifikasi karakter oleh model CNN">
         <div class="proj-name">Deteksi Plat Nomor Kendaraan (Haar Cascade + CNN)</div>
         <div class="proj-desc">Sistem deteksi dan pengenalan plat nomor kendaraan dari citra digital. Haar Cascade digunakan untuk mendeteksi lokasi plat nomor pada gambar, kemudian Convolutional Neural Network (CNN) digunakan untuk mengenali karakter pada plat tersebut.</div>
         <div class="proj-stack">
@@ -350,6 +423,7 @@
           <span class="chip">CNN</span>
           <span class="chip">TensorFlow/Keras</span>
         </div>
+        <div class="proj-hint">Lihat detail proyek →</div>
       </div>
     </section>
 
@@ -429,6 +503,38 @@
 
   </div>
 
+  <!-- MODAL DETAIL PROYEK -->
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Tutup">×</button>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-stack" id="modalStack"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-gallery">
+        <div class="shot">
+          <div class="browser-bar"><span></span><span></span><span></span></div>
+          <img id="modalImg1" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-fallback">Gambar belum ditambahkan — letakkan file gambar di folder yang sama lalu sesuaikan atribut data-img1</div>
+          <div class="shot-caption" id="modalCap1"></div>
+        </div>
+        <div class="shot-row">
+          <div class="shot">
+            <div class="browser-bar"><span></span><span></span><span></span></div>
+            <img id="modalImg2" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="img-fallback">Gambar belum ditambahkan</div>
+            <div class="shot-caption" id="modalCap2"></div>
+          </div>
+          <div class="shot">
+            <div class="browser-bar"><span></span><span></span><span></span></div>
+            <img id="modalImg3" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="img-fallback">Gambar belum ditambahkan</div>
+            <div class="shot-caption" id="modalCap3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
   // Mode terang / gelap — default terang
   const root = document.documentElement;
@@ -444,6 +550,54 @@
   toggleBtn.addEventListener('click', ()=>{
     const current = root.getAttribute('data-theme');
     setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // Modal detail proyek
+  const projectModal = document.getElementById('projectModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalStack = document.getElementById('modalStack');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalClose = document.getElementById('modalClose');
+
+  function openProjectModal(card){
+    modalTitle.textContent = card.dataset.title || '';
+    modalDesc.textContent = card.dataset.desc || '';
+
+    modalStack.innerHTML = '';
+    (card.dataset.stack || '').split(',').forEach(item=>{
+      const t = item.trim();
+      if(!t) return;
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.textContent = t;
+      modalStack.appendChild(chip);
+    });
+
+    for(let i=1; i<=3; i++){
+      const img = document.getElementById('modalImg' + i);
+      const cap = document.getElementById('modalCap' + i);
+      const fallback = img.nextElementSibling;
+      img.style.display = '';
+      fallback.style.display = 'none';
+      img.src = card.dataset['img' + i] || '';
+      cap.textContent = card.dataset['cap' + i] || '';
+    }
+
+    projectModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProjectModal(){
+    projectModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  modalClose.addEventListener('click', closeProjectModal);
+  projectModal.addEventListener('click', (e)=>{
+    if(e.target === projectModal) closeProjectModal();
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeProjectModal();
   });
 
   // Reveal on scroll
